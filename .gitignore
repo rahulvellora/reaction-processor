@@ -1,3 +1,3 @@
 input_images
-output_results
 decimer_segmentation/mask_rcnn_molecule.h5
+out
