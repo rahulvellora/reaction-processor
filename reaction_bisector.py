@@ -59,30 +59,24 @@ class ReactionProcessor:
         return output_path
 
     def detect_arrow_and_split(self, image_path):
-        image = cv2.imread(image_path)
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-        edges = cv2.Canny(gray, 50, 150)
-        lines = cv2.HoughLinesP(
-            edges, 1, np.pi / 180, threshold=50, minLineLength=100, maxLineGap=10
+        img = cv2.imread(image_path)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+        edges = cv2.Canny(gray, threshold1=50, threshold2=150)
+
+        contours, _ = cv2.findContours(
+            edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
         )
-        min_x, min_y = float("inf"), float("inf")
-        max_x, max_y = 0, 0
 
-        if lines is not None:
-            for line in lines:
-                x1, y1, x2, y2 = line[0]
-                line_length = np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        for idx, cnt in enumerate(contours):
+            x, y, w, h = cv2.boundingRect(cnt)
+            aspect_ratio = w / float(h)
+            if aspect_ratio > 4 and 50 < w < 500 and h < 50:
 
-                if line_length > 100 and abs(y2 - y1) < 10:
-                    min_x, min_y = min(min_x, x1, x2), min(min_y, y1, y2)
-                    max_x, max_y = max(max_x, x1, x2), max(max_y, y1, y2)
-
-        if min_x < max_x and min_y < max_y:
-            left_part = image[:, :min_x]
-            right_part = image[:, max_x:]
-        else:
-            return None, None
+                left_part = img[:, :x]
+                right_part = img[:, x + w :]
+                break
 
         reactants_path = image_path.replace("_reaction.png", "_reactants.png")
         products_path = image_path.replace("_reaction.png", "_products.png")
