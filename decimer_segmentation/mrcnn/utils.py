@@ -11,16 +11,17 @@ Modified on 2020 July by : Kohulan Rajan
 
 import logging
 import random
+import shutil
+import urllib.request
+import warnings
+from distutils.version import LooseVersion
+
 import numpy as np
-import tensorflow as tf
 import scipy
 import skimage.color
 import skimage.io
 import skimage.transform
-import urllib.request
-import shutil
-import warnings
-from distutils.version import LooseVersion
+import tensorflow as tf
 
 # URL from which to download the latest COCO trained weights
 COCO_MODEL_URL = "https://storage.googleapis.com/mrcnn-weights/mask_rcnn_molecule.h5"

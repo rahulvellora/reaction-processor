@@ -10,24 +10,24 @@ Modified on 2020 July by : Kohulan Rajan
 
 """
 
-import os
 import datetime
-import re
 import math
-from collections import OrderedDict
 import multiprocessing
+import os
+import re
+from collections import OrderedDict
+from distutils.version import LooseVersion
+
 import numpy as np
 import tensorflow as tf
 import tensorflow.keras as keras
 import tensorflow.keras.backend as K
 import tensorflow.keras.layers as KL
+import tensorflow.keras.models as KM
 import tensorflow.keras.utils as KU
 from tensorflow.python.eager import context
-import tensorflow.keras.models as KM
-
 
 from . import utils
-from distutils.version import LooseVersion
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 

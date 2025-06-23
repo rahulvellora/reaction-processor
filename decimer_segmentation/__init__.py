@@ -16,5 +16,5 @@ __all__ = [
     "decimer_segmentation",
 ]
 
-from .decimer_segmentation import *
 from .complete_structure import *
+from .decimer_segmentation import *

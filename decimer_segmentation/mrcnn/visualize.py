@@ -9,21 +9,19 @@ Written by Waleed Abdulla
 Modified on 2020 July by : Kohulan Rajan
 """
 
-import random
-import itertools
 import colorsys
+import itertools
+import random
 
-import numpy as np
-from skimage.measure import find_contours
-import matplotlib.pyplot as plt
-from matplotlib import patches, lines
-from matplotlib.patches import Polygon
 import IPython.display
-
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import lines, patches
+from matplotlib.patches import Polygon
+from skimage.measure import find_contours
 
 # Import Mask RCNN
 from . import utils
-
 
 ############################################################
 #  Visualization
@@ -425,9 +423,7 @@ def plot_overlaps(
         color = (
             "white"
             if overlaps[i, j] > thresh
-            else "black"
-            if overlaps[i, j] > 0
-            else "grey"
+            else "black" if overlaps[i, j] > 0 else "grey"
         )
         plt.text(
             j,

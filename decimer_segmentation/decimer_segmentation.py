@@ -1,26 +1,27 @@
 """
- * This Software is under the MIT License
- * Refer to LICENSE or https://opensource.org/licenses/MIT for more information
- * Written by ©Kohulan Rajan 2020
+* This Software is under the MIT License
+* Refer to LICENSE or https://opensource.org/licenses/MIT for more information
+* Written by ©Kohulan Rajan 2020
 """
-import os
-import requests
-import cv2
+
 import argparse
+import os
 import warnings
-import numpy as np
 from copy import deepcopy
 from itertools import cycle
 from multiprocessing import Pool
+from typing import List, Tuple
+
+import cv2
+import numpy as np
+import requests
 from pdf2image import convert_from_path
 from pdf2image.exceptions import PDFInfoNotInstalledError
-from typing import List, Tuple
 from PIL import Image
+
 from .complete_structure import complete_structure_mask
 from .mrcnn import model as modellib
-from .mrcnn import visualize
-from .mrcnn import moldetect
-
+from .mrcnn import moldetect, visualize
 
 warnings.filterwarnings("ignore")
 
@@ -81,7 +82,9 @@ def segment_chemical_structures(
     image: np.array,
     expand: bool = True,
     visualization: bool = False,
-) -> Tuple[List[np.array], List[Tuple[int, int, int, int]]]:  # Now returns both segments & bboxes
+) -> Tuple[
+    List[np.array], List[Tuple[int, int, int, int]]
+]:  # Now returns both segments & bboxes
     """
     Runs the segmentation model and expands masks if required.
     Returns segmented chemical structure depictions along with bounding boxes.
@@ -92,7 +95,7 @@ def segment_chemical_structures(
         visualization (bool): Whether to visualize the results
 
     Returns:
-        Tuple[List[np.array], List[Tuple[int, int, int, int]]]: 
+        Tuple[List[np.array], List[Tuple[int, int, int, int]]]:
             - Segmented images sorted top->bottom, left->right
             - Corresponding bounding boxes (x, y, w, h)
     """
@@ -126,9 +129,8 @@ def segment_chemical_structures(
     return valid_segments, valid_bboxes
 
 
-
 def determine_depiction_size_with_buffer(
-    bboxes: List[Tuple[int, int, int, int]]
+    bboxes: List[Tuple[int, int, int, int]],
 ) -> Tuple[int, int]:
     """
     This function takes a list of bounding boxes and returns 1.1 * the maximal
@@ -210,7 +212,9 @@ def load_model() -> modellib.MaskRCNN:
     # Download trained weights if needed
     if not os.path.exists(model_path):
         print("Downloading model weights...")
-        url = "https://zenodo.org/record/10663579/files/mask_rcnn_molecule.h5?download=1"
+        url = (
+            "https://zenodo.org/record/10663579/files/mask_rcnn_molecule.h5?download=1"
+        )
         req = requests.get(url, allow_redirects=True)
         with open(model_path, "wb") as model_file:
             model_file.write(req.content)
@@ -242,10 +246,7 @@ def get_expanded_masks(image: np.array) -> np.array:
     size = determine_depiction_size_with_buffer(bboxes)
     # Mask expansion
     expanded_masks = complete_structure_mask(
-        image_array=image,
-        mask_array=masks,
-        max_depiction_size=size,
-        debug=False
+        image_array=image, mask_array=masks, max_depiction_size=size, debug=False
     )
     return expanded_masks
 

@@ -29,10 +29,11 @@ Usage: import the module (see Jupyter notebooks for examples), or run from
     python3 balloon.py splash --weights=last --video=<URL or path to file>
 """
 
+import datetime
+import json
 import os
 import sys
-import json
-import datetime
+
 import numpy as np
 import skimage.draw
 
@@ -44,9 +45,9 @@ if ROOT_DIR.endswith("samples/balloon"):
 
 # Import Mask RCNN
 sys.path.append(ROOT_DIR)
-from .config import Config
-from . import utils
 from . import model as modellib
+from . import utils
+from .config import Config
 
 # Path to trained weights file
 COCO_WEIGHTS_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")

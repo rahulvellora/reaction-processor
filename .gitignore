@@ -1,3 +1,6 @@
 input_images
 decimer_segmentation/mask_rcnn_molecule.h5
 out
+reaction_arrow_detection_yolo/data
+reaction_arrow_detection_yolo/inference_outputs
+reaction_arrow_detection_yolo/runs

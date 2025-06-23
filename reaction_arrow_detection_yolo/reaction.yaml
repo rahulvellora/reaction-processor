@@ -1,0 +1,6 @@
+path: reaction_dataset  # update to your full path
+train: images/train
+val: images/val
+
+names:
+  0: reaction_arrow
